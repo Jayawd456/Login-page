@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #141e30, #243b55);
+        }
+
+        .auth-container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+
+        .auth-heading {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 14px;
+            color: gray;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            background: #243b55;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            background: #1d2d40;
+        }
+
+        .error-msg {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .forgot-link {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <h2 class="auth-heading">Login</h2>
+        <div class="form-group">
+            <input type="email" id="auth-email" class="form-input" placeholder="Enter Email">
+        </div>
+        <div class="form-group">
+            <input type="password" id="auth-password" class="form-input" placeholder="Enter Password">
+            <span class="password-toggle" onclick="toggleAuthPassword()">👁</span>
+        </div>
+        <button class="auth-btn" onclick="validateAuth()">Login</button>
+        <p class="error-msg" id="auth-error"></p>
+        <a href="#" class="forgot-link">Forgot Password?</a>
+    </div>
+
+    <script>
+        function toggleAuthPassword() {
+            let passwordField = document.getElementById("auth-password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+
+        function validateAuth() {
+            let emailField = document.getElementById("auth-email").value.trim();
+            let passwordField = document.getElementById("auth-password").value.trim();
+            let errorMsg = document.getElementById("auth-error");
+
+            let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (emailField === "" || passwordField === "") {
+                errorMsg.innerText = "Both fields are required!";
+                return;
+            } else if (!emailPattern.test(emailField)) {
+                errorMsg.innerText = "Enter a valid email!";
+                return;
+            } else if (passwordField.length < 6) {
+                errorMsg.innerText = "Password must be at least 6 characters!";
+                return;
+            }
+
+            let userData = {
+                email: emailField,
+                password: passwordField
+            };
+
+            localStorage.setItem("userAuthData", JSON.stringify(userData));
+
+            alert("Login Successful!");
+            errorMsg.innerText = "";
+        }
+    </script>
+
+</body>
+</html>
